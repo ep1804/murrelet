@@ -1,9 +1,6 @@
-murrelet
-========
+# Murrelet Overview
 
-# Introduction
-
-This is a simple messaging facade for various message queues or buses. The concept is like SLF4J, the simple logging facade for java.util.logging, log4j, etc. 
+Murrelet is a simple messaging facade for various message queues or buses. The concept is like SLF4J, the simple logging facade for java.util.logging, log4j, etc. 
 
 
 # Agenda
