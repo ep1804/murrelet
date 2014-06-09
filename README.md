@@ -1,8 +1,7 @@
 # Murrelet Overview
 
-Murrelet is a simple messaging facade for various message queues or buses. The concept is like SLF4J, the simple logging facade for java.util.logging, log4j, etc. 
+Murrelet is a simple messaging facade for various message brokers (non-JMS-based ones firstly). The concept is like SLF4J, the simple logging facade for java.util.logging, log4j, etc. 
 
-In addition, this is just a toy project. No offence to JMS API yet.
 
 # Agenda
 
