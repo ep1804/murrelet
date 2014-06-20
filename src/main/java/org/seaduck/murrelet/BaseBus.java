@@ -28,4 +28,6 @@ public abstract class BaseBus {
 		return busName;
 	}
 	
+	public abstract void close();
+	
 }

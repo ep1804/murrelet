@@ -28,24 +28,14 @@ public class BaseSyncMessageTest {
 	@Test
 	public void testContent() {
 		String content = "{\"content\":\"test message\"}";
-		UUID uuid = UUID.randomUUID();
 		
-		StringMessageSync msg = new StringMessageSync(content, uuid);
-		assertEquals(uuid, msg.getCorrelationId());
-	}
-
-	@Test
-	public void testCorrelationId() {
-		String content = "{\"content\":\"test message\"}";
-		UUID uuid = UUID.randomUUID();
-		
-		StringMessageSync msg = new StringMessageSync(content, uuid);
-		assertEquals(uuid, msg.getCorrelationId());
+		StringSyncMessage msg = new StringSyncMessage(content);
+		assertEquals(content, msg.getString());
 	}
 	
-	class StringMessageSync extends BaseSyncMessage{
-		public StringMessageSync(String content, UUID uuid) {
-			super(content.getBytes(), uuid);
+	class StringSyncMessage extends BaseSyncMessage{
+		public StringSyncMessage(String content) {
+			super(content.getBytes());
 		}
 
 		public String getString(){

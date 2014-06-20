@@ -16,12 +16,14 @@
 
 package org.seaduck.murrelet;
 
-public abstract class BaseAsyncSender extends BaseBus {
+public abstract class BaseSyncSender extends BaseBus {
 
-	public BaseAsyncSender(String busName) {
+	public BaseSyncSender(String busName) {
 		super(busName);
 	}
 
-	public abstract void send(BaseAsyncMessage message);
-		
+	public abstract void bindResponseHandler(BaseSyncHandler handler);
+
+	public abstract void send(BaseSyncMessage message);
+	
 }

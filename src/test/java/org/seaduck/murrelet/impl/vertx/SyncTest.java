@@ -24,55 +24,67 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import org.seaduck.murrelet.BaseAsyncMessage;
-import org.seaduck.murrelet.impl.vertx.AsyncHandler;
-import org.seaduck.murrelet.impl.vertx.AsyncMessage;
-import org.seaduck.murrelet.impl.vertx.AsyncReceiver;
-import org.seaduck.murrelet.impl.vertx.AsyncSender;
+import org.seaduck.murrelet.BaseSyncMessage;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
 
-public class AsyncTest {
+public class SyncTest {
 
 	@Test
-	public void testSenderReceiver() throws InterruptedException {
-		
+	public void testSenderReceiver() throws InterruptedException{
 		// for fetching data from threads other than main test thread.
-		final CountDownLatch latch = new CountDownLatch(1);
-		final Map<String,Object> map = new HashMap<String,Object>();
+		final CountDownLatch latch = new CountDownLatch(2);
+		final Map<String,Object> map = new HashMap<String,Object>();		
 		
 		Vertx vertx = VertxFactory.newVertx();
-		String content = "{\"content\":\"test message\"}";
 		
-		AsyncSender sender = new AsyncSender("TEST_BUS", vertx.eventBus());
-		
-		AsyncReceiver receiver = new AsyncReceiver("TEST_BUS", vertx.eventBus());
-		
-		receiver.bindHandler(new AsyncHandler(){
+		SyncSender sender = new SyncSender("TEST_DUPLEX_BUS", vertx.eventBus());
+				
+		sender.bindResponseHandler(new SyncHandler(){
 
 			@Override
-			public void handle(BaseAsyncMessage message) {
-				map.put("ReceivedMessage", new String(message.getBytes()));
-				latch.countDown();
-				
-				String content = "{\"content\":\"well done\"}";
-				SyncMessage msg = new SyncMessage(content);
-				
-				System.out.println("msg: " + msg);
-				System.out.println("Body: " + new String(msg.getBytes()));
-				
+			public void handle(BaseSyncMessage message) {
+				map.put("Response", new String(message.getBytes()));
+				latch.countDown();				
 			}
 			
 		});
 		
-		AsyncMessage msg = new AsyncMessage(content);
-		sender.send(msg);
+		final SyncReceiver receiver = new SyncReceiver("TEST_DUPLEX_BUS", vertx.eventBus());
+		
+		receiver.bindHandler(new SyncHandler(){
+
+			@Override
+			public void handle(BaseSyncMessage message) {
+		
+				System.out.println("message.corr: " + message.getCorrelationId().toString());
+				
+				String content = "{\"content\":\"well done\"}";
+				SyncMessage msg = new SyncMessage(content);
+				
+				
+				
+				System.out.println("msg: " + msg);
+				System.out.println("Body: " + new String(msg.getBytes()));
+				
+				receiver.respond(msg);
+				
+				map.put("ReceivedMessage", new String(message.getBytes()));				
+				latch.countDown();
+			}
+			
+		});
+		
+		String content = "{\"content\":\"test message\"}";
+		SyncMessage msg = new SyncMessage(content);
+		sender.send(msg);		
 		
 		latch.await(10, TimeUnit.SECONDS);
 		assertEquals( (String) map.get("ReceivedMessage"), content);
+		assertEquals( (String) map.get("Response"), content);		
 		
 		sender.close();
-		receiver.close();
+		receiver.close();		
 	}
 
 }

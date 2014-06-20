@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package org.seaduck.murrelet;
+package org.seaduck.murrelet.impl.vertx;
 
-public abstract class BaseAsyncSender extends BaseBus {
+import org.seaduck.murrelet.BaseSyncHandler;
+import org.vertx.java.core.Handler;
+import org.vertx.java.core.eventbus.impl.BaseMessage;
 
-	public BaseAsyncSender(String busName) {
-		super(busName);
+public class VertxSyncMessageHandler implements Handler<BaseMessage<byte[]>> {
+	private BaseSyncHandler handler;
+	
+	public VertxSyncMessageHandler(BaseSyncHandler handler) {		
+		this.handler = handler;
+	}
+	
+	@Override
+	public void handle(BaseMessage<byte[]> bytes) {
+		handler.handle(new SyncMessage(bytes.body()));
 	}
 
-	public abstract void send(BaseAsyncMessage message);
-		
 }

@@ -17,6 +17,7 @@
 package org.seaduck.murrelet;
 
 public abstract class BaseAsyncMessage {
+	
 	private byte[] bytes;
 
 	public BaseAsyncMessage(){

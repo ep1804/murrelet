@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package org.seaduck.murrelet;
+package org.seaduck.murrelet.impl.vertx;
 
-public abstract class BaseAsyncSender extends BaseBus {
+import org.seaduck.murrelet.BaseSyncMessage;
 
-	public BaseAsyncSender(String busName) {
-		super(busName);
+public class SyncMessage extends BaseSyncMessage {
+
+	public SyncMessage(String content) {
+		super(content.getBytes());
 	}
-
-	public abstract void send(BaseAsyncMessage message);
-		
+	
+	public SyncMessage(byte[] bytes) {
+		super(bytes);
+	}
+	
+	public String getContent(){
+		return new String(super.getBytes());
+	}
+	
+	public void setContent(String content){
+		super.setBytes(content.getBytes());
+	}	
 }

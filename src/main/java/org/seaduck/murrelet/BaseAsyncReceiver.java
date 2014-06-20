@@ -23,7 +23,5 @@ public abstract class BaseAsyncReceiver extends BaseBus {
 	}
 
 	public abstract void bindHandler(BaseAsyncHandler handler);
-	
-	public abstract void close();
-	
+
 }

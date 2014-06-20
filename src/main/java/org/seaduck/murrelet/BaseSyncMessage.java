@@ -29,18 +29,12 @@ public abstract class BaseSyncMessage extends BaseAsyncMessage {
 	public BaseSyncMessage(byte[] bytes) {
 		super(bytes);
 	}
-	
-	public BaseSyncMessage(byte[] bytes, UUID correlationId) {
-		super(bytes);
-		this.setCorrelationId(correlationId);
-	}
 
+	public void setCorrelatoinId(UUID correlationId){
+		this.correlationId = correlationId;
+	}
+	
 	public UUID getCorrelationId() {
 		return correlationId;
 	}
-
-	public void setCorrelationId(UUID correlationId) {
-		this.correlationId = correlationId;
-	}
-
 }
