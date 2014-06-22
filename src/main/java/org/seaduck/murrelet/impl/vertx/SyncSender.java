@@ -16,8 +16,6 @@
 
 package org.seaduck.murrelet.impl.vertx;
 
-import java.util.UUID;
-
 import org.seaduck.murrelet.BaseSyncHandler;
 import org.seaduck.murrelet.BaseSyncMessage;
 import org.seaduck.murrelet.BaseSyncSender;
@@ -29,8 +27,7 @@ public class SyncSender extends BaseSyncSender {
 	
 	private Logger logger;
 	private EventBus eventBus;
-	private UUID correlationId;
-	private VertxSyncMessageHandler responseHandler;
+	private SyncVertxHandler responseHandler;
 	
 	public SyncSender(String busName, EventBus eventBus) {
 		super(busName);
@@ -39,33 +36,21 @@ public class SyncSender extends BaseSyncSender {
 		this.eventBus = eventBus;
 		
 		this.logger.info("Bus established with name: " + super.getBusName());
-
 	}
 
 	@Override
 	public void bindResponseHandler(BaseSyncHandler handler) {
-		this.correlationId = UUID.randomUUID();
-		this.responseHandler = new VertxSyncMessageHandler(handler);
-		this.eventBus.registerHandler(this.correlationId.toString(), this.responseHandler);
+		this.responseHandler = new SyncVertxHandler(handler);
 		
-		this.logger.info("Message response handler is bound to the bus: " + super.getBusName());		
+		this.logger.info("Message response handler is created: " + super.getBusName());		
 	}
 
 	@Override
 	public void send(BaseSyncMessage message) {
-		message.setCorrelatoinId(this.correlationId);
-		this.eventBus.send(super.getBusName(), message.getBytes());
-		
-		//TODO message sending should cover correlation ID
-		
-		System.out.println("message.corr: " + message.getCorrelationId().toString());
-		
+		this.eventBus.send(super.getBusName(), message.getBody(), this.responseHandler);
 	}
 
 	@Override
 	public void close() {
-		this.eventBus.unregisterHandler(super.getBusName(), this.responseHandler);
-		
-		this.logger.info("Message response handler is removed from the bus: " + super.getBusName());
 	}
 }

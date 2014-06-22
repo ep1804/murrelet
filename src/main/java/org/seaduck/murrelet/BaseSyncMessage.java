@@ -16,11 +16,9 @@
 
 package org.seaduck.murrelet;
 
-import java.util.UUID;
-
 public abstract class BaseSyncMessage extends BaseAsyncMessage {
 	
-	private UUID correlationId;
+	private String correlationId;
 
 	public BaseSyncMessage() {
 		super();
@@ -30,11 +28,11 @@ public abstract class BaseSyncMessage extends BaseAsyncMessage {
 		super(bytes);
 	}
 
-	public void setCorrelatoinId(UUID correlationId){
+	public void setCorrelatoinId(String correlationId){
 		this.correlationId = correlationId;
 	}
 	
-	public UUID getCorrelationId() {
+	public String getCorrelationId() {
 		return correlationId;
 	}
 }

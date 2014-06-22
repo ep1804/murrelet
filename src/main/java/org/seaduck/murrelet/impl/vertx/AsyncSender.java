@@ -38,7 +38,7 @@ public class AsyncSender extends BaseAsyncSender {
 
 	@Override
 	public void send(BaseAsyncMessage message) {
-		this.eventBus.send(super.getBusName(), message.getBytes());
+		this.eventBus.send(super.getBusName(), message.getBody());
 	}
 
 	@Override

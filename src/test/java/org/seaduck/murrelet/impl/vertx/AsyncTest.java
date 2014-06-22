@@ -52,15 +52,8 @@ public class AsyncTest {
 
 			@Override
 			public void handle(BaseAsyncMessage message) {
-				map.put("ReceivedMessage", new String(message.getBytes()));
+				map.put("ReceivedMessage", new String(message.getBody()));
 				latch.countDown();
-				
-				String content = "{\"content\":\"well done\"}";
-				SyncMessage msg = new SyncMessage(content);
-				
-				System.out.println("msg: " + msg);
-				System.out.println("Body: " + new String(msg.getBytes()));
-				
 			}
 			
 		});

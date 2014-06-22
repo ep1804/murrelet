@@ -18,18 +18,22 @@ package org.seaduck.murrelet.impl.vertx;
 
 import org.seaduck.murrelet.BaseSyncHandler;
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.impl.BaseMessage;
+import org.vertx.java.core.eventbus.Message;
 
-public class VertxSyncMessageHandler implements Handler<BaseMessage<byte[]>> {
+public class SyncVertxHandler implements Handler<Message<byte[]>> {
 	private BaseSyncHandler handler;
 	
-	public VertxSyncMessageHandler(BaseSyncHandler handler) {		
+	public SyncVertxHandler(BaseSyncHandler handler) {		
 		this.handler = handler;
 	}
-	
+
 	@Override
-	public void handle(BaseMessage<byte[]> bytes) {
-		handler.handle(new SyncMessage(bytes.body()));
+	public void handle(Message<byte[]> message) {
+
+		org.seaduck.murrelet.impl.vertx.SyncMessage msg = new SyncMessage(message.body());
+		msg.setCorrelatoinId(message.replyAddress());		
+		
+		handler.handle(msg);
 	}
 
 }

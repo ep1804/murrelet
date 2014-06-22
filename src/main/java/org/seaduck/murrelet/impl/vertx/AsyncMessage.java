@@ -29,11 +29,11 @@ public class AsyncMessage extends BaseAsyncMessage {
 	}
 
 	public String getContent(){
-		return new String(super.getBytes());
+		return new String(super.getBody());
 	}
 	
 	public void setContent(String content){
-		super.setBytes(content.getBytes());
+		super.setBody(content.getBytes());
 	}
 	
 }

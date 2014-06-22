@@ -18,19 +18,19 @@ package org.seaduck.murrelet.impl.vertx;
 
 import org.seaduck.murrelet.BaseAsyncHandler;
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.impl.BaseMessage;
+import org.vertx.java.core.eventbus.Message;
 
-public class VertxMessageHandler implements Handler<BaseMessage<byte[]>>{
+public class AsyncVertxHandler implements Handler<Message<byte[]>>{
 
 	private BaseAsyncHandler handler;
 	
-	public VertxMessageHandler(BaseAsyncHandler handler) {
+	public AsyncVertxHandler(BaseAsyncHandler handler) {
 		this.handler = handler;
 	}
 
 	@Override
-	public void handle(BaseMessage<byte[]> bytes) {
-		handler.handle(new AsyncMessage(bytes.body()));
+	public void handle(Message<byte[]> bytes) {
+		this.handler.handle(new org.seaduck.murrelet.impl.vertx.AsyncMessage(bytes.body()));
 	}
 
 }

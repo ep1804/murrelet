@@ -44,7 +44,7 @@ public class SyncTest {
 
 			@Override
 			public void handle(BaseSyncMessage message) {
-				map.put("Response", new String(message.getBytes()));
+				map.put("Response", new String(message.getBody()));
 				latch.countDown();				
 			}
 			
@@ -56,32 +56,24 @@ public class SyncTest {
 
 			@Override
 			public void handle(BaseSyncMessage message) {
-		
-				System.out.println("message.corr: " + message.getCorrelationId().toString());
-				
-				String content = "{\"content\":\"well done\"}";
-				SyncMessage msg = new SyncMessage(content);
-				
-				
-				
-				System.out.println("msg: " + msg);
-				System.out.println("Body: " + new String(msg.getBytes()));
+
+				SyncMessage msg = new SyncMessage("{\"content\":\"well done\"}");
+				msg.setCorrelatoinId(message.getCorrelationId());
 				
 				receiver.respond(msg);
 				
-				map.put("ReceivedMessage", new String(message.getBytes()));				
+				map.put("ReceivedMessage", new String(message.getBody()));				
 				latch.countDown();
 			}
 			
 		});
 		
-		String content = "{\"content\":\"test message\"}";
-		SyncMessage msg = new SyncMessage(content);
+		SyncMessage msg = new SyncMessage("{\"content\":\"test message\"}");
 		sender.send(msg);		
 		
 		latch.await(10, TimeUnit.SECONDS);
-		assertEquals( (String) map.get("ReceivedMessage"), content);
-		assertEquals( (String) map.get("Response"), content);		
+		assertEquals( (String) map.get("ReceivedMessage"), "{\"content\":\"test message\"}");
+		assertEquals( (String) map.get("Response"), "{\"content\":\"well done\"}");		
 		
 		sender.close();
 		receiver.close();		

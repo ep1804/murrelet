@@ -26,7 +26,7 @@ public class AsyncReceiver extends BaseAsyncReceiver {
 
 	private Logger logger;
 	private EventBus eventBus;
-	private VertxMessageHandler handler;
+	private AsyncVertxHandler handler;
 	
 	public AsyncReceiver(String busName, EventBus eventBus) {
 		super(busName);
@@ -39,7 +39,7 @@ public class AsyncReceiver extends BaseAsyncReceiver {
 
 	@Override
 	public void bindHandler(BaseAsyncHandler handler) {
-		this.handler = new VertxMessageHandler(handler);
+		this.handler = new AsyncVertxHandler(handler);
 		this.eventBus.registerHandler(super.getBusName(), this.handler);
 		
 		this.logger.info("Message handler is bound to the bus: " + super.getBusName());

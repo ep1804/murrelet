@@ -36,11 +36,11 @@ public class BaseAsyncMessageTest {
 		}
 
 		public String getString(){
-			return new String(super.getBytes());
+			return new String(super.getBody());
 		}
 		
 		public void setString(String content){
-			super.setBytes(content.getBytes());
+			super.setBody(content.getBytes());
 		}
 	}
 }

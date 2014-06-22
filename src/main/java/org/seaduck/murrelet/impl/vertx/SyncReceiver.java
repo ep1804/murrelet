@@ -28,7 +28,7 @@ public class SyncReceiver extends BaseSyncReceiver {
 	
 	private Logger logger;
 	private EventBus eventBus;
-	private VertxSyncMessageHandler handler;
+	private SyncVertxHandler handler;
 	
 	public SyncReceiver(String busName, EventBus eventBus) {
 		super(busName);
@@ -41,7 +41,7 @@ public class SyncReceiver extends BaseSyncReceiver {
 
 	@Override
 	public void bindHandler(BaseSyncHandler handler) {		
-		this.handler = new VertxSyncMessageHandler(handler);
+		this.handler = new SyncVertxHandler(handler);
 		this.eventBus.registerHandler(super.getBusName(), this.handler);
 		
 		this.logger.info("Message handler is bound to the bus: " + super.getBusName());
@@ -49,12 +49,7 @@ public class SyncReceiver extends BaseSyncReceiver {
 
 	@Override
 	public void respond(BaseSyncMessage message) {
-		
-		System.out.println("msg: " + message);
-		System.out.println("CorrelationID: " + message.getCorrelationId().toString());
-		System.out.println("Body: " + message.getBytes().toString());
-		
-		this.eventBus.send(message.getCorrelationId().toString(), message.getBytes());
+		this.eventBus.send(message.getCorrelationId(), message.getBody());
 	}
 
 	@Override

@@ -18,20 +18,20 @@ package org.seaduck.murrelet;
 
 public abstract class BaseAsyncMessage {
 	
-	private byte[] bytes;
+	private byte[] body;
 
 	public BaseAsyncMessage(){
 	}
 	
-	public BaseAsyncMessage(byte[] bytes){
-		this.bytes = bytes;
+	public BaseAsyncMessage(byte[] body){
+		this.body = body;
 	}
 	
-	public byte[] getBytes() {
-		return bytes;
+	public byte[] getBody() {
+		return body;
 	}
 	
-	public void setBytes(byte[] bytes) {
-		this.bytes = bytes;
+	public void setBody(byte[] body) {
+		this.body = body;
 	}
 }
