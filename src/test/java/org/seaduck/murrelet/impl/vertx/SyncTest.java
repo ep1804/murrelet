@@ -44,6 +44,7 @@ public class SyncTest {
 
 			@Override
 			public void handle(BaseSyncMessage message) {
+				
 				map.put("Response", new String(message.getBody()));
 				latch.countDown();				
 			}
@@ -57,13 +58,19 @@ public class SyncTest {
 			@Override
 			public void handle(BaseSyncMessage message) {
 
-				SyncMessage msg = new SyncMessage("{\"content\":\"well done\"}");
-				msg.setCorrelatoinId(message.getCorrelationId());
-				
-				receiver.respond(msg);
-				
 				map.put("ReceivedMessage", new String(message.getBody()));				
 				latch.countDown();
+				
+				SyncMessage msg = new SyncMessage("{\"content\":\"well done\"}");
+				msg.setCorrelatoinId(message.getCorrelationId());				
+				receiver.respond(msg);
+				
+				/* Following code also works:
+				
+				((SyncMessage)message).setContent("{\"content\":\"well done\"}");
+				receiver.respond(message);
+				
+				*/
 			}
 			
 		});
@@ -73,7 +80,7 @@ public class SyncTest {
 		
 		latch.await(10, TimeUnit.SECONDS);
 		assertEquals( (String) map.get("ReceivedMessage"), "{\"content\":\"test message\"}");
-		assertEquals( (String) map.get("Response"), "{\"content\":\"well done\"}");		
+		assertEquals( (String) map.get("Response"), "{\"content\":\"well done\"}");
 		
 		sender.close();
 		receiver.close();		
