@@ -36,7 +36,7 @@ public class SyncReceiver extends BaseSyncReceiver {
 		this.logger = LoggerFactory.getLogger(AsyncSender.class);
 		this.eventBus = eventBus;
 		
-		this.logger.info("Bus established with name: " + super.getBusName());
+		this.logger.info("Bus established: " + super.getBusName());
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class SyncReceiver extends BaseSyncReceiver {
 	public void close() {
 		this.eventBus.unregisterHandler(super.getBusName(), this.handler);
 		
-		this.logger.info("Message handler is removed from the bus: " + super.getBusName());
+		this.logger.info("Bus closed: " + super.getBusName());
 	}
 
 }

@@ -35,7 +35,7 @@ public class SyncSender extends BaseSyncSender {
 		this.logger = LoggerFactory.getLogger(AsyncSender.class);
 		this.eventBus = eventBus;
 		
-		this.logger.info("Bus established with name: " + super.getBusName());
+		this.logger.info("Bus established: " + super.getBusName());
 	}
 
 	@Override
