@@ -29,6 +29,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 public class AsyncSender extends BaseAsyncSender {
 
+	// TODO move logger to base class?
 	private Logger logger;
 	private Connection connection;
 	private Channel channel;
